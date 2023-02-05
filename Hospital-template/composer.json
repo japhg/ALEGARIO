@@ -1,0 +1,10 @@
+{
+    "name": "acme/application-tracker",
+    "description": "An application tracking system built with PHP",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "apache/tika": "^1.25"
+    }
+}
