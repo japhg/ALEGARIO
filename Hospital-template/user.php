@@ -1,30 +1,208 @@
 <?php
 session_start();
-include 'connection.php';
+include 'database/connection.php';
 require 'function.php';
 ?>
 
 <?php
 $errors = array();
 
-//ADD USER
-if (isset($_POST['insert'])) {
-  $username = clean(mysqli_real_escape_string($con, $_POST['username']));
-  $password = clean(mysqli_real_escape_string($con, $_POST['password']));
+
+if (isset($_POST["insertsuperAdmin"])) {
+  $firstname = mysqli_real_escape_string($con1, $_POST['firstname']);
+  $middlename = mysqli_real_escape_string($con1, $_POST['middlename']);
+  $lastname = mysqli_real_escape_string($con1, $_POST['lastname']);
+  $email = mysqli_real_escape_string($con1, $_POST['email']);
+
+  $randomNumber = mt_rand(100, 999);
+  $username = "superAdmin" . $randomNumber;
+  $randomPassNumber = mt_rand(10000000, 99999999);
+  $password = "#SA12345678";
   $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-  $firstname = clean(mysqli_real_escape_string($con, $_POST['firstname']));
-  $middlename = clean(mysqli_real_escape_string($con, $_POST['middlename']));
-  $lastname = clean(mysqli_real_escape_string($con, $_POST['lastname']));
-  $usertype = clean(mysqli_real_escape_string($con, $_POST['usertype']));
 
-  if (!empty($username) && !empty($hashedPassword) && !empty($firstname) && !empty($middlename) && !empty($lastname) && !empty($usertype)) {
-    $query = "INSERT INTO user_table(username, password, firstname, middlename, lastname, user_type) VALUES('$username', '$hashedPassword', '$firstname', '$middlename', '$lastname', '$usertype')";
-    $result = mysqli_query($con, $query);
-    
+  // Start a transaction
+  mysqli_autocommit($con1, false);
 
-    $errors['username'] = "Successfully Added";
+  $sql1 = "INSERT INTO user_table (username, password, role) 
+VALUES ('$username', '$hashedPassword', 'SUPER ADMIN')";
+
+  if (mysqli_query($con1, $sql1)) {
+    $last_id = mysqli_insert_id($con1);
+
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+
+    if (mysqli_query($con1, $sql2)) {
+      // Commit the transaction
+      mysqli_commit($con1);
+      $errors['username'] = "Successfully Added";
+    } else {
+      // Rollback the transaction
+      mysqli_rollback($con1);
+      echo "Error: " . $sql2 . "<br>" . $con1->error;
+    }
+  } else {
+    // Rollback the transaction
+    mysqli_rollback($con1);
+    echo "Error: " . $sql1 . "<br>" . $con1->error;
+  }
+} else if (isset($_POST["inserthrAdmin"])) {
+  $firstname = mysqli_real_escape_string($con1, $_POST['firstname']);
+  $middlename = mysqli_real_escape_string($con1, $_POST['middlename']);
+  $lastname = mysqli_real_escape_string($con1, $_POST['lastname']);
+  $email = mysqli_real_escape_string($con1, $_POST['email']);
+
+  $randomNumber = mt_rand(100, 999);
+  $username = "hrAdmin" . $randomNumber;
+  $randomPassNumber = mt_rand(10000000, 99999999);
+  $password = "#HA12345678";
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+  // Start a transaction
+  mysqli_autocommit($con1, false);
+
+  $sql1 = "INSERT INTO user_table (username, password, role) 
+VALUES ('$username', '$hashedPassword', 'HR ADMIN')";
+
+  if (mysqli_query($con1, $sql1)) {
+    $last_id = mysqli_insert_id($con1);
+
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+
+    if (mysqli_query($con1, $sql2)) {
+      // Commit the transaction
+      mysqli_commit($con1);
+      $errors['username'] = "Successfully Added";
+    } else {
+      // Rollback the transaction
+      mysqli_rollback($con1);
+      echo "Error: " . $sql2 . "<br>" . $con1->error;
+    }
+  } else {
+    // Rollback the transaction
+    mysqli_rollback($con1);
+    echo "Error: " . $sql1 . "<br>" . $con1->error;
+  }
+} else if (isset($_POST["insertcoreAdmin"])) {
+  $firstname = mysqli_real_escape_string($con1, $_POST['firstname']);
+  $middlename = mysqli_real_escape_string($con1, $_POST['middlename']);
+  $lastname = mysqli_real_escape_string($con1, $_POST['lastname']);
+  $email = mysqli_real_escape_string($con1, $_POST['email']);
+
+  $randomNumber = mt_rand(100, 999);
+  $username = "coreAdmin" . $randomNumber;
+  $randomPassNumber = mt_rand(10000000, 99999999);
+  $password = "#CA12345678";
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+  // Start a transaction
+  mysqli_autocommit($con1, false);
+
+  $sql1 = "INSERT INTO user_table (username, password, role) 
+VALUES ('$username', '$hashedPassword', 'CORE ADMIN')";
+
+  if (mysqli_query($con1, $sql1)) {
+    $last_id = mysqli_insert_id($con1);
+
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+
+    if (mysqli_query($con1, $sql2)) {
+      // Commit the transaction
+      mysqli_commit($con1);
+      $errors['username'] = "Successfully Added";
+    } else {
+      // Rollback the transaction
+      mysqli_rollback($con1);
+      echo "Error: " . $sql2 . "<br>" . $con1->error;
+    }
+  } else {
+    // Rollback the transaction
+    mysqli_rollback($con1);
+    echo "Error: " . $sql1 . "<br>" . $con1->error;
+  }
+} else if (isset($_POST["insertlogisticsAdmin"])) {
+  $firstname = mysqli_real_escape_string($con1, $_POST['firstname']);
+  $middlename = mysqli_real_escape_string($con1, $_POST['middlename']);
+  $lastname = mysqli_real_escape_string($con1, $_POST['lastname']);
+  $email = mysqli_real_escape_string($con1, $_POST['email']);
+
+  $randomNumber = mt_rand(100, 999);
+  $username = "logAdmin" . $randomNumber;
+  $randomPassNumber = mt_rand(10000000, 99999999);
+  $password = "#LA12345678";
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+  // Start a transaction
+  mysqli_autocommit($con1, false);
+
+  $sql1 = "INSERT INTO user_table (username, password, role) 
+VALUES ('$username', '$hashedPassword', 'LOGISTICS ADMIN')";
+
+  if (mysqli_query($con1, $sql1)) {
+    $last_id = mysqli_insert_id($con1);
+
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+
+    if (mysqli_query($con1, $sql2)) {
+      // Commit the transaction
+      mysqli_commit($con1);
+      $errors['username'] = "Successfully Added";
+    } else {
+      // Rollback the transaction
+      mysqli_rollback($con1);
+      echo "Error: " . $sql2 . "<br>" . $con1->error;
+    }
+  } else {
+    // Rollback the transaction
+    mysqli_rollback($con1);
+    echo "Error: " . $sql1 . "<br>" . $con1->error;
+  }
+} else if (isset($_POST["insertfinancialAdmin"])) {
+  $firstname = mysqli_real_escape_string($con1, $_POST['firstname']);
+  $middlename = mysqli_real_escape_string($con1, $_POST['middlename']);
+  $lastname = mysqli_real_escape_string($con1, $_POST['lastname']);
+  $email = mysqli_real_escape_string($con1, $_POST['email']);
+
+  $randomNumber = mt_rand(100, 999);
+  $username = "financialAdmin" . $randomNumber;
+  $randomPassNumber = mt_rand(10000000, 99999999);
+  $password = "#FA12345678";
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+  // Start a transaction
+  mysqli_autocommit($con1, false);
+
+  $sql1 = "INSERT INTO user_table (username, password, role) 
+VALUES ('$username', '$hashedPassword', 'FINANCIALS ADMIN')";
+
+  if (mysqli_query($con1, $sql1)) {
+    $last_id = mysqli_insert_id($con1);
+
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+
+    if (mysqli_query($con1, $sql2)) {
+      // Commit the transaction
+      mysqli_commit($con1);
+      $errors['username'] = "Successfully Added";
+    } else {
+      // Rollback the transaction
+      mysqli_rollback($con1);
+      echo "Error: " . $sql2 . "<br>" . $con1->error;
+    }
+  } else {
+    // Rollback the transaction
+    mysqli_rollback($con1);
+    echo "Error: " . $sql1 . "<br>" . $con1->error;
   }
 }
+
+
+
+
+
+
+
+
+
+
 ?>
 
 
@@ -34,7 +212,7 @@ if (isset($_POST['insert'])) {
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="300; url=index.php">
+  <meta http-equiv="refresh" content="3000; url=index.php">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Users | Alegario Cure Hospital</title>
@@ -173,131 +351,300 @@ if (isset($_POST['insert'])) {
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input type="text" class="form-control" name="username" id="username" required>
-                  <div class="invalid-feedback">Please enter username</div>
-                </div>
+              <select class="form-select" onchange="showFormFields(this.value)">
+                <option value="" selected disabled>Select user type</option>
+                <option value="superAdmin">SUPER ADMIN </option>
+                <option value="hrAdmin">HR ADMIN</option>
+                <option value="coreAdmin">CORE ADMIN</option>
+                <option value="logisticsAdmin">LOGISTICS ADMIN</option>
+                <option value="financialAdmin">FINANCIAL ADMIN</option>
+              </select>
+              <div id="superAdmin-fields" style="display:none">
+                <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control validate" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
-                  <div class="invalid-feedback">Please enter password</div>
-                </div>
-                <div class="alert alert-warning password-alert" role="alert">
-                  <ul>
-                    <li class="requirements leng"><i class="fas fa-check green-text"></i><i class="fas fa-times red-text"></i> Your password must have at least 8 chars.</li>
-                    <li class="requirements big-letter"><i class="fas fa-check green-text"></i><i class="fas fa-times red-text"></i> Your password must have at least 1 big letter.</li>
-                    <li class="requirements num"><i class="fas fa-check green-text"></i><i class="fas fa-times red-text"></i> Your password must have at least 1 number.</li>
-                  </ul>
-                </div>
+                  <div class="mb-3">
+                    <label for="firstname" class="form-label">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" id="firstname" required>
+                    <div class="invalid-feedback">Please enter firstname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="middlename" class="form-label">Middlename</label>
+                    <input type="text" class="form-control" name="middlename" id="middlename" required>
+                    <div class="invalid-feedback">Please enter middlename</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" id="lastname" required>
+                    <div class="invalid-feedback">Please enter lastname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                    <div class="invalid-feedback">Please enter Email Address</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="insertsuperAdmin" id="insert">Add</button>
+                  </div>
+                </form>
+              </div>
 
-                <div class="mb-3">
-                  <label for="firstname" class="form-label">Firstname</label>
-                  <input type="text" class="form-control" name="firstname" id="firstname" required>
-                  <div class="invalid-feedback">Please enter firstname</div>
-                </div>
-                <div class="mb-3">
-                  <label for="middlename" class="form-label">Middlename</label>
-                  <input type="text" class="form-control" name="middlename" id="middlename" required>
-                  <div class="invalid-feedback">Please enter middlename</div>
-                </div>
-                <div class="mb-3">
-                  <label for="lastname" class="form-label">Lastname</label>
-                  <input type="text" class="form-control" name="lastname" id="lastname" required>
-                  <div class="invalid-feedback">Please enter lastname</div>
-                </div>
-                <div class="mb-3">
-                  <label for="usertype" class="form-label">User type</label>
 
-                  <select name="usertype" id="usertype" class="form-select" aria-label="Default select example" required>
-                    <option value="">Please Choose</option>
-                    <option value="SUPER ADMIN">SUPER ADMIN</option>
-                    <option value="HR ADMIN">HR ADMIN</option>
-                    <option value="CORE ADMIN">CORE ADMIN</option>
-                    <option value="LOGISTICS ADMIN">LOGISTICS ADMIN</option>
-                    <option value="FINANCIALS ADMIN">FINANCIALS ADMIN</option>
-                  </select>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" name="insert" id="insert">Add</button>
-                </div>
-              </form>
+              <div id="hrAdmin-fields" style="display:none">
+                <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+
+                  <div class="mb-3">
+                    <label for="firstname" class="form-label">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" id="firstname" required>
+                    <div class="invalid-feedback">Please enter firstname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="middlename" class="form-label">Middlename</label>
+                    <input type="text" class="form-control" name="middlename" id="middlename" required>
+                    <div class="invalid-feedback">Please enter middlename</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" id="lastname" required>
+                    <div class="invalid-feedback">Please enter lastname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                    <div class="invalid-feedback">Please enter Email Address</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="inserthrAdmin" id="insert">Add</button>
+                  </div>
+                </form>
+              </div>
+
+              <div id="coreAdmin-fields" style="display:none">
+                <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+
+                  <div class="mb-3">
+                    <label for="firstname" class="form-label">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" id="firstname" required>
+                    <div class="invalid-feedback">Please enter firstname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="middlename" class="form-label">Middlename</label>
+                    <input type="text" class="form-control" name="middlename" id="middlename" required>
+                    <div class="invalid-feedback">Please enter middlename</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" id="lastname" required>
+                    <div class="invalid-feedback">Please enter lastname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                    <div class="invalid-feedback">Please enter Email Address</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="insertcoreAdmin" id="insert">Add</button>
+                  </div>
+                </form>
+              </div>
+
+              <div id="logisticsAdmin-fields" style="display:none">
+                <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+
+                  <div class="mb-3">
+                    <label for="firstname" class="form-label">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" id="firstname" required>
+                    <div class="invalid-feedback">Please enter firstname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="middlename" class="form-label">Middlename</label>
+                    <input type="text" class="form-control" name="middlename" id="middlename" required>
+                    <div class="invalid-feedback">Please enter middlename</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" id="lastname" required>
+                    <div class="invalid-feedback">Please enter lastname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                    <div class="invalid-feedback">Please enter Email Address</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="insertlogisticsAdmin" id="insert">Add</button>
+                  </div>
+                </form>
+              </div>
+
+              <div id="financialAdmin-fields" style="display:none">
+                <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+
+                  <div class="mb-3">
+                    <label for="firstname" class="form-label">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" id="firstname" required>
+                    <div class="invalid-feedback">Please enter firstname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="middlename" class="form-label">Middlename</label>
+                    <input type="text" class="form-control" name="middlename" id="middlename" required>
+                    <div class="invalid-feedback">Please enter middlename</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" id="lastname" required>
+                    <div class="invalid-feedback">Please enter lastname</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                    <div class="invalid-feedback">Please enter Email Address</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="insertfinancialAdmin" id="insert">Add</button>
+                  </div>
+                </form>
+              </div>
+
             </div>
+
           </div>
         </div>
       </div>
-
-
-      <div class="row">
-        <div class="col-md-12 float-right">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add">Add</button>
-        </div>
-      </div>
-      <br>
-      <div class="card-body">
-        <div class="table-responsive">
-
-          <table class="table table-bordered table-hover table-striped" id="dataTable" width="100%" cellspacing="0" style="border: 1px solid #121212;">
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Username</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Last Name</th>
-                <th>User Type</th>
-                <th>Date Joined</th>
-                <th colspan="2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $query = "SELECT * FROM user_table";
-              $result = mysqli_query($con, $query);
-              if (mysqli_num_rows($result)) {
-                while ($row = mysqli_fetch_assoc($result)) {
-              ?>
-                  <tr>
-                    <th><?php echo $row['user_id']; ?></th>
-                    <th><?php echo $row['username']; ?></th>
-                    <th><?php echo $row['firstname']; ?></th>
-                    <th><?php echo $row['middlename']; ?></th>
-                    <th><?php echo $row['lastname']; ?></th>
-                    <th><?php echo $row['user_type']; ?></th>
-                    <th><?php echo $row['date_joined']; ?></th>
-
-                    <th style="text-align: center;">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <form action="updateUser.php" method="post">
-                            <input type="hidden" name="updates" id="updates" value="<?php echo $row['user_id']; ?>">
-                            <button type="submit" class="btn btn-success">Update</button>
-                          </form>
-                        </div>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <input type="hidden" name="deletes" class="deletes" id="delete" value="<?php echo $row['user_id']; ?>">
-                          <a href="javascript:void(0)" class="delete_btn_ajax btn btn-danger">Delete</a>
-                        </div>
-                      </div>
-                    </th>
-                  </tr>
-              <?php
-                }
-              }
-              ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    </div>
     </div>
 
+
+
+    <div class="row">
+      <div class="col-md-12 float-right">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add">Add</button>
+      </div>
+    </div>
+    <br>
+    <div class="card-body">
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-hover table-striped" id="dataTable" width="100%" cellspacing="0" style="border: 1px solid #121212;">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Username</th>
+              <th>Password <br>(Default Password)</th>
+              <th>First Name</th>
+              <th>Middle Name</th>
+              <th>Last Name</th>
+              <th>User Type</th>
+              <th>Date Joined</th>
+              <th colspan="2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $query = "SELECT user.*, admin.* FROM user_table user, admins admin WHERE admin.user_id = user.u_id";
+            $result = mysqli_query($con1, $query);
+            if (mysqli_num_rows($result)) {
+              while ($row = mysqli_fetch_assoc($result)) {
+            ?>
+                <tr>
+                  <th><?php echo $row['u_id']; ?></th>
+                  <th><?php echo $row['username']; ?></th>
+                  <th>
+                    <?php if($row['role'] === "SUPER ADMIN")
+                    {
+                      echo "#SA12345678";
+                    }  
+                    elseif($row['role'] === "HR ADMIN")
+                    {
+                      echo "#HA12345678";
+                    }
+                    elseif($row['role'] === "CORE ADMIN")
+                    {
+                      echo "#CA12345678";
+                    }
+                    elseif($row['role'] === "LOGISTICS ADMIN")
+                    {
+                      echo "#LA12345678";
+                    }
+                    elseif($row['role'] === "FINANCIALS ADMIN")
+                    {
+                      echo "#FA12345678";
+                    }
+                    ?>
+                  </th>
+                  <th><?php echo $row['firstname']; ?></th>
+                  <th><?php echo $row['middlename']; ?></th>
+                  <th><?php echo $row['lastname']; ?></th>
+                  <th><?php echo $row['role']; ?></th>
+                  <th><?php echo $row['date_added']; ?></th>
+
+                  <th style="text-align: center;">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <form action="updateUser.php" method="post">
+                          <input type="hidden" name="updates" id="updates" value="<?php echo $row['user_id']; ?>">
+                          <button type="submit" class="btn btn-success">Update</button>
+                        </form>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <input type="hidden" name="deletes" class="deletes" id="delete" value="<?php echo $row['user_id']; ?>">
+                        <a href="javascript:void(0)" class="delete_btn_ajax btn btn-danger">Delete</a>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+            <?php
+              }
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+    <script>
+      function showFormFields(userType) {
+        if (userType === "superAdmin") {
+          document.getElementById("superAdmin-fields").style.display = "block";
+          document.getElementById("hrAdmin-fields").style.display = "none";
+          document.getElementById("coreAdmin-fields").style.display = "none";
+          document.getElementById("logisticsAdmin-fields").style.display = "none";
+          document.getElementById("financialAdmin-fields").style.display = "none";
+        } else if (userType === "hrAdmin") {
+          document.getElementById("superAdmin-fields").style.display = "none";
+          document.getElementById("hrAdmin-fields").style.display = "block";
+          document.getElementById("coreAdmin-fields").style.display = "none";
+          document.getElementById("logisticsAdmin-fields").style.display = "none";
+          document.getElementById("financialAdmin-fields").style.display = "none";
+        } else if (userType === "coreAdmin") {
+          document.getElementById("superAdmin-fields").style.display = "none";
+          document.getElementById("hrAdmin-fields").style.display = "none";
+          document.getElementById("coreAdmin-fields").style.display = "block";
+          document.getElementById("logisticsAdmin-fields").style.display = "none";
+          document.getElementById("financialAdmin-fields").style.display = "none";
+        } else if (userType === "logisticsAdmin") {
+          document.getElementById("superAdmin-fields").style.display = "none";
+          document.getElementById("hrAdmin-fields").style.display = "none";
+          document.getElementById("coreAdmin-fields").style.display = "none";
+          document.getElementById("logisticsAdmin-fields").style.display = "block";
+          document.getElementById("financialAdmin-fields").style.display = "none";
+        } else if (userType === "financialAdmin") {
+          document.getElementById("superAdmin-fields").style.display = "none";
+          document.getElementById("hrAdmin-fields").style.display = "none";
+          document.getElementById("coreAdmin-fields").style.display = "none";
+          document.getElementById("logisticsAdmin-fields").style.display = "none";
+          document.getElementById("financialAdmin-fields").style.display = "block";
+        }
+      }
+    </script>
 
     <script>
       $(document).ready(function() {

@@ -15,8 +15,8 @@ if (isset($_POST['login'])) {
     if ($total_count == 3) {
         $errors['student_number'] = "Users are now locked. Please wait for 30 seconds! ";
     } else {
-        $username = clean(mysqli_real_escape_string($con1, $_POST["user"]));
-        $password = clean(mysqli_real_escape_string($con1, $_POST['password']));
+        $username = mysqli_real_escape_string($con1, $_POST["user"]);
+        $password = mysqli_real_escape_string($con1, $_POST['password']);
 
 
         $query = "SELECT * FROM user_table WHERE username = '$username'";
@@ -26,18 +26,58 @@ if (isset($_POST['login'])) {
             $row = mysqli_fetch_assoc($result);
             $_SESSION['valid'] = true;
             $_SESSION['timeout'] = time();
-            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['user_id'] = $row['u_id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['password'] = $row['password'];
             $hashedPassword = $row['password'];
 
             if (password_verify($password, $hashedPassword)) {
-                if ($row['user_type'] == "SUPER ADMIN") {
+                if ($row['role'] == "SUPER ADMIN") {
                     mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
-                } else if ($row['user_type'] == "HR ADMIN") {
+                } else if ($row['role'] == "HR ADMIN") {
                     mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
-                    header("location: ../../hr/hrAdmin/index.php");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "CORE ADMIN") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "LOGISTICS ADMIN") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "FINANCIALS ADMIN") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "DOCTOR") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "HOSPITAL STAFF") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "MEDTECH") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "NUTRITIONIST") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
+                    exit(0);
+                }
+                else if ($row['role'] == "PATIENT") {
+                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    header("location: dashboard.php");
                     exit(0);
                 }
             } else {
