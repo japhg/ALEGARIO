@@ -23,13 +23,13 @@ if (isset($_POST["insertsuperAdmin"])) {
   // Start a transaction
   mysqli_autocommit($con1, false);
 
-  $sql1 = "INSERT INTO user_table (username, password, role) 
+  $sql1 = "INSERT INTO users (username, password, role) 
 VALUES ('$username', '$hashedPassword', 'SUPER ADMIN')";
 
   if (mysqli_query($con1, $sql1)) {
     $last_id = mysqli_insert_id($con1);
 
-    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email_address) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
 
     if (mysqli_query($con1, $sql2)) {
       // Commit the transaction
@@ -60,13 +60,13 @@ VALUES ('$username', '$hashedPassword', 'SUPER ADMIN')";
   // Start a transaction
   mysqli_autocommit($con1, false);
 
-  $sql1 = "INSERT INTO user_table (username, password, role) 
+  $sql1 = "INSERT INTO users (username, password, role) 
 VALUES ('$username', '$hashedPassword', 'HR ADMIN')";
 
   if (mysqli_query($con1, $sql1)) {
     $last_id = mysqli_insert_id($con1);
 
-    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email_address) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
 
     if (mysqli_query($con1, $sql2)) {
       // Commit the transaction
@@ -97,13 +97,13 @@ VALUES ('$username', '$hashedPassword', 'HR ADMIN')";
   // Start a transaction
   mysqli_autocommit($con1, false);
 
-  $sql1 = "INSERT INTO user_table (username, password, role) 
+  $sql1 = "INSERT INTO users (username, password, role) 
 VALUES ('$username', '$hashedPassword', 'CORE ADMIN')";
 
   if (mysqli_query($con1, $sql1)) {
     $last_id = mysqli_insert_id($con1);
 
-    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email_address) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
 
     if (mysqli_query($con1, $sql2)) {
       // Commit the transaction
@@ -133,13 +133,13 @@ VALUES ('$username', '$hashedPassword', 'CORE ADMIN')";
   // Start a transaction
   mysqli_autocommit($con1, false);
 
-  $sql1 = "INSERT INTO user_table (username, password, role) 
+  $sql1 = "INSERT INTO users (username, password, role) 
 VALUES ('$username', '$hashedPassword', 'LOGISTICS ADMIN')";
 
   if (mysqli_query($con1, $sql1)) {
     $last_id = mysqli_insert_id($con1);
 
-    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email_address) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
 
     if (mysqli_query($con1, $sql2)) {
       // Commit the transaction
@@ -170,13 +170,13 @@ VALUES ('$username', '$hashedPassword', 'LOGISTICS ADMIN')";
   // Start a transaction
   mysqli_autocommit($con1, false);
 
-  $sql1 = "INSERT INTO user_table (username, password, role) 
+  $sql1 = "INSERT INTO users (username, password, role) 
 VALUES ('$username', '$hashedPassword', 'FINANCIALS ADMIN')";
 
   if (mysqli_query($con1, $sql1)) {
     $last_id = mysqli_insert_id($con1);
 
-    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
+    $sql2 = "INSERT INTO admins (user_id, firstname, middlename, lastname, email_address) VALUES ('$last_id','$firstname','$middlename','$lastname', '$email')";
 
     if (mysqli_query($con1, $sql2)) {
       // Commit the transaction
@@ -212,7 +212,7 @@ VALUES ('$username', '$hashedPassword', 'FINANCIALS ADMIN')";
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="3000; url=index.php">
+  <meta http-equiv="refresh" content="1600; url=index.php">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Users | Alegario Cure Hospital</title>
@@ -545,13 +545,13 @@ VALUES ('$username', '$hashedPassword', 'FINANCIALS ADMIN')";
           </thead>
           <tbody>
             <?php
-            $query = "SELECT user.*, admin.* FROM user_table user, admins admin WHERE admin.user_id = user.u_id";
+            $query = "SELECT user.*, admin.* FROM users user, admins admin WHERE admin.user_id = user.id";
             $result = mysqli_query($con1, $query);
             if (mysqli_num_rows($result)) {
               while ($row = mysqli_fetch_assoc($result)) {
             ?>
                 <tr>
-                  <th><?php echo $row['u_id']; ?></th>
+                  <th><?php echo $row['id']; ?></th>
                   <th><?php echo $row['username']; ?></th>
                   <th>
                     <?php if($row['role'] === "SUPER ADMIN")

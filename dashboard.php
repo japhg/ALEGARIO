@@ -10,7 +10,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="300; url=index.php">
+  <meta http-equiv="refresh" content="1600; url=index.php">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Dashboard - Alegario Cure Hospital</title>

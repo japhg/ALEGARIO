@@ -10,73 +10,73 @@ $errors = array();
 if (isset($_POST['login'])) {
     $ip = getUserIpAdd();
     $time = time() - 30;
-    $check_attempt = mysqli_fetch_assoc(mysqli_query($con1, "SELECT COUNT(*) as total_attempt FROM attempt_table WHERE time_count>$time AND ip_address = '$ip'"));
+    $check_attempt = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) as total_attempt FROM attempt WHERE time_count>$time AND ip_address = '$ip'"));
     $total_count = $check_attempt['total_attempt'];
-    if ($total_count == 3) {
+    if ($total_count === 3) {
         $errors['student_number'] = "Users are now locked. Please wait for 30 seconds! ";
     } else {
-        $username = mysqli_real_escape_string($con1, $_POST["user"]);
-        $password = mysqli_real_escape_string($con1, $_POST['password']);
+        $username = mysqli_real_escape_string($con, $_POST["user"]);
+        $password = mysqli_real_escape_string($con, $_POST['password']);
 
 
-        $query = "SELECT * FROM user_table WHERE username = '$username'";
-        $result = mysqli_query($con1, $query);
+        $query = "SELECT * FROM users WHERE username = '$username'";
+        $result = mysqli_query($con, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $_SESSION['valid'] = true;
             $_SESSION['timeout'] = time();
-            $_SESSION['user_id'] = $row['u_id'];
+            $_SESSION['user_id'] = $row['id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['password'] = $row['password'];
             $hashedPassword = $row['password'];
 
             if (password_verify($password, $hashedPassword)) {
                 if ($row['role'] == "SUPER ADMIN") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                 } else if ($row['role'] == "HR ADMIN") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
-                    header("location: ../../Alegario Cure HMS/hr/hrAdmin/index.php");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
+                    header("location: hr/index.php");
                     exit(0);
                 }
                 else if ($row['role'] == "CORE ADMIN") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
                 else if ($row['role'] == "LOGISTICS ADMIN") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
                 else if ($row['role'] == "FINANCIALS ADMIN") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
                 else if ($row['role'] == "DOCTOR") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
                 else if ($row['role'] == "HOSPITAL STAFF") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
                 else if ($row['role'] == "MEDTECH") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
                 else if ($row['role'] == "NUTRITIONIST") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
                 else if ($row['role'] == "PATIENT") {
-                    mysqli_query($con1, "DELETE FROM attempt_table WHERE ip_address = '$ip'");
+                    mysqli_query($con, "DELETE FROM attempt WHERE ip_address = '$ip'");
                     header("location: dashboard.php");
                     exit(0);
                 }
@@ -84,12 +84,12 @@ if (isset($_POST['login'])) {
                 $total_count++;
                 $time_remain = 5 - $total_count;
                 $time = time();
-                if ($time_remain == 0) {
+                if ($time_remain === 0) {
                     $errors['student_number'] = "Users are now locked. Please wait for 30 seconds! ";
                 } else {
                     $errors['username'] = "Username or Password is incorrect. " . $time_remain . " attempts  remaining. ";
                 }
-                mysqli_query($con1, "INSERT INTO attempt_table(ip_address,time_count) VALUES('$ip','$time')");
+                mysqli_query($con, "INSERT INTO attempt(ip_address,time_count) VALUES('$ip','$time')");
             }
         }
         $total_count++;
@@ -100,7 +100,7 @@ if (isset($_POST['login'])) {
         } else {
             $errors['username'] = "Username or Password is incorrect. " . $time_remain . " attempts  remaining. ";
         }
-        mysqli_query($con1, "INSERT INTO attempt_table(ip_address,time_count) VALUES('$ip','$time')");
+        mysqli_query($con, "INSERT INTO attempt(ip_address,time_count) VALUES('$ip','$time')");
     }
 }
 function getUserIpAdd()

@@ -7,7 +7,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="300; url=index.php">
+  <meta http-equiv="refresh" content="1600; url=index.php">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Subsystems - Alegario Cure Hospital</title>
@@ -59,7 +59,7 @@
   <img src="https://cdn-icons-png.flaticon.com/512/5928/5928316.png" class="card-img-top" width ="20px">
   <div class="card-body">
     <h5 class="card-title">HUMAN RESOURCE 1</h5>
-    <button class="btn-enter">
+    <button class="btn-enter" onclick="location.href = 'hr/index.php';">
   <span class="circle" aria-hidden="true">
   <span class="icon arrow"></span>
   </span>
